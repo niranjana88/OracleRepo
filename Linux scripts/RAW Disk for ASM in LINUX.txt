@@ -1,0 +1,65 @@
+Make RAW Disk for ASM in LINUX:-
+
+mkdir /asmdisk
+
+_____________________________________________________________
+dd : copy a file,convertin & formatin acc to the operands
+-----if : if=FILE  ''''read from file instead of stdin
+-----of : of=FILE '''''write to file instead od stdout
+-----bs : bs=BYTES ''''forcr ibs=bytes & obs=bytes
+-----count : count=BLOCKS '''' copy only BLOCKS input blocks
+_____________________________________________________________
+dd if=/dev/zero of=/asmdisk/disk1 bs=1024k count=1000
+
+dd if=/dev/zero of=/asmdisk/disk2 bs=1024k count=1000
+
+dd if=/dev/zero of=/asmdisk/disk3 bs=1024k count=1000
+
+dd if=/dev/zero of=/asmdisk/disk4 bs=1024k count=1000
+
+_______________
+losetup cmd :  to associate loop device with each file_____setup & control loop devices
+_______________
+
+/sbin/losetup /dev/loop1 /asmdisk/disk1
+
+/sbin/losetup /dev/loop2 /asmdisk/disk2
+
+/sbin/losetup /dev/loop3 /asmdisk/disk3
+
+/sbin/losetup /dev/loop4 /asmdisk/disk4
+
+_______________________________
+raw : bind a linux raw character device to a block device. any block device may be used: at time of binding.
+________________________________
+
+raw /dev/raw/raw1 /dev/loop1
+
+raw /dev/raw/raw2 /dev/loop2
+
+raw /dev/raw/raw3 /dev/loop3
+
+raw /dev/raw/raw4 /dev/loop4
+
+cd /dev/raw
+
+chown -R oracle:orainstall *
+
+vi /etc/rc.local
+
+---Paste the following :-
+	/sbin/losetup /dev/loop1 /asmdisk/disk1
+	/sbin/losetup /dev/loop2 /asmdisk/disk2
+	/sbin/losetup /dev/loop3 /asmdisk/disk3
+	/sbin/losetup /dev/loop4 /asmdisk/disk4
+	raw /dev/raw/raw1 /dev/loop1
+	raw /dev/raw/raw2 /dev/loop2
+	raw /dev/raw/raw3 /dev/loop3
+	raw /dev/raw/raw4 /dev/loop4
+:wq!
+___________________________________________________
+
+_____Now devices are ready for ASM Installation
+
+
+

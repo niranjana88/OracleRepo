@@ -1,0 +1,36 @@
+Connectin 2 nodes through ssh noprompt:
+======================================
+
+node1# ssh-keygen -t rsa	press "return" 3 times
+node1# ssh-keygen -t dsa	press "return" 3 times
+
+node2# ssh-keygen -t rsa	press "return" 3 times
+node2# ssh-keygen -t dsa	press "return" 3 times
+
+
+Now (from node1) add the generated keys to the ~/.ssh/authorized_keys file
+
+node1# cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+node1# cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+
+SSH from node 1 to 2
+
+node1# ssh node2 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+node1# ssh node2 cat ~/.ssh/id_dsa.pub >> ~/.ssh/authorized_keys
+
+Copy "authorizes_keys" from node1 to 2
+
+node1# scp ~/.ssh/authorizes_keys node2 : ~/.ssh/authorizes_keys
+
+
+Test:
+Fire the below commands from both the nodes:-
+
+ssh node1 date
+ssh node2 date
+ssh node1-priv date
+ssh node2-priv date
+ssh node1.test.nj date
+ssh node2.test.nj date
+ssh node1-priv.test.nj date
+ssh node2-priv.test.nj date

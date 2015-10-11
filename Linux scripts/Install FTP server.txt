@@ -1,0 +1,49 @@
+Install FTP server on LINUX:-
+_____________________________
+
+
+[root@oracle ~]#
+[root@oracle ~]# rpm -qa vsftpd
+vsftpd-2.0.5-21.el5
+[root@oracle ~]# rpm -qa portmap
+portmap-4.0-65.2.2.1
+[root@oracle ~]# rpm -qa xinetd
+xinetd-2.3.14-13.el5
+[root@oracle ~]#
+[root@oracle ~]# service portman restart
+portman: unrecognized service
+[root@oracle ~]# service portmap restart
+Stopping portmap:                                          [  OK  ]
+Starting portmap:                                          [  OK  ]
+[root@oracle ~]# service xinetd restart
+Stopping xinetd:                                           [  OK  ]
+Starting xinetd:                                           [  OK  ]
+[root@oracle ~]# service vsftpd restart
+Shutting down vsftpd:                                      [  OK  ]
+Starting vsftpd for vsftpd:                                [  OK  ]
+[root@oracle ~]# chkconfig vsftpd on
+[root@oracle ~]# chkconfig portmap on
+[root@oracle ~]# chkconfig xinetd on
+[root@oracle ~]# service portmap status
+portmap (pid 2986) is running...
+[root@oracle ~]# service xinetd status
+xinetd (pid  3003) is running...
+[root@oracle ~]#
+
+#####################################################################################
+cat /etc/vsftpd/ftpusers    --->  # Users that are not allowed to login via ftp
+				  #root < --- comment out this line for allow root login via ftp
+
+& also
+ 
+cat /etc/vsftpd/user_list   --->  # vsftpd userlist
+				  #root < --- comment out this line
+
+##################################################################################
+create user 
+
+[root@oracle ~]#useradd usr_name
+[root@oracle ~]#passwd usr_name
+New password:
+
+netstat -a | grep ftp

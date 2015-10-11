@@ -1,0 +1,11 @@
+linux os version
+
+cat /proc/version
+Linux version 2.6.32-200.13.1.el5uek (mockbuild@ca-build9.us.oracle.com) (gcc version 4.1.2 20080704 (Red Hat 4.1.2-50)) #1 SMP Wed Jul 27 20:21:26 EDT 2011
+
+cat /etc/issue
+Oracle Linux Server release 5.7
+Kernel \r on an \m
+
+cat /etc/redhat-release
+Red Hat Enterprise Linux Server release 5.7 (Tikanga)

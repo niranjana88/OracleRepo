@@ -1,0 +1,50 @@
+
+Linux / Unix Command: umount
+
+
+NAME
+
+umount - unmount file systems
+SYNOPSIS
+
+umount [-hV]
+umount -a [-dflnrv] [-t vfstype] [-O options] 
+umount [-dflnrv] dir | device [...]
+
+DESCRIPTION
+
+The umount command detaches the file system(s) mentioned from the file hierarchy. A file system is specified by giving the directory where it has been mounted. Giving the special device on which the file system lives may also work, but is obsolete, mainly because it will fail in case this device was mounted on more than one directory.
+Note that a file system cannot be unmounted when it is `busy' - for example, when there are open files on it, or when some process has its working directory there, or when a swap file on it is in use. The offending process could even be umount itself - it opens libc, and libc in its turn may open for example locale files. A lazy unmount avoids this problem.
+
+Options for the umount command:
+
+-V
+Print version and exit.
+-h
+Print help message and exit.
+-v
+Verbose mode.
+-n
+Unmount without writing in /etc/mtab.
+-r
+In case unmounting fails, try to remount read-only.
+-d
+In case the unmounted device was a loop device, also free this loop device.
+-a
+All of the file systems described in /etc/mtab are unmounted. (With umount version 2.7 and later: the proc filesystem is not unmounted.)
+-t vfstype
+Indicate that the actions should only be taken on file systems of the specified type. More than one type may be specified in a comma separated list. The list of file system types can be prefixed with no to specify the file system types on which no action should be taken.
+-O options
+Indicate that the actions should only be taken on file systems with the specified options in /etc/fstab. More than one option type may be specified in a comma separated list. Each option can be prefixed with no to specify options for which no action should be taken.
+-f
+Force unmount (in case of an unreachable NFS system). (Requires kernel 2.1.116 or later.)
+-l
+Lazy unmount. Detach the filesystem from the filesystem hierarchy now, and cleanup all references to the filesystem as soon as it is not busy anymore. (Requires kernel 2.4.11 or later.)
+THE LOOP DEVICE
+
+The umount command will free the loop device (if any) associated with the mount, in case it finds the option `loop=...' in /etc/mtab, or when the -d option was given. Any pending loop devices can be freed using `losetup -d', see losetup(8).
+
+SEE ALSO
+
+umount(2), mount(8), losetup(8).
+

@@ -1,0 +1,17 @@
+Installing VMware Tools on VMware Workstation 7.1.3
+
+After installing BackTrack to hard disk in VMware, you might want to install the VMware Tools for a smoother VM experience. The latest VMware tools for 7.1.3 compile perfectly with the current BackTrack kernel.
+Boot up BackTrack, start networking and make usre you are connected to the internet.
+Start the VMware tools install from within VMware.
+Mount the virtual cdrom to /mnt:
+
+root@bt:~#  mkdir /mnt/cdrom 
+root@bt:~#  mount /dev/cdrom3 /mnt/cdrom/ 
+mount: block device /dev/hdc is write-protected, mounting read-only
+root@bt:~#  cp -rf /mnt/cdrom/VM* /tmp/ 
+root@bt:~#  cd /tmp/ 
+
+root@bt:/tmp#  tar zxpf VMwareTools-8.4.3-282344.tar.gz  
+
+root@bt:/tmp#  cd vmware-tools-distrib/ 
+root@bt:/tmp#  ./vmware-config-tools.pl

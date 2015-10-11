@@ -1,0 +1,7 @@
+
+SQL> show parameter cpu_count
+
+SQL> select name,value from v$parameter where name = 'cpu_count';
+
+
+$ top

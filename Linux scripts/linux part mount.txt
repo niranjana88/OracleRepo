@@ -1,0 +1,31 @@
+
+
+creating linux partition & mounting
+
+
+fdisk -l
+
+fdisk -l /dev/sdb
+
+
+create ext3 filesystem
+
+mkfs -t ext3 -L /u02 /dev/sdb1
+
+
+mount ext3 fs to linux
+
+mount -t ext3 /dev/sdb1 /u02
+
+
+to make it automount:
+
+vi /etc/fstab
+
+LABEL=/u02	/u02	ext3	defaults	1	2
+
+
+to confirm changes:
+
+mount -t ext3 LABEL=/u02 /u02
+mount /u02

@@ -1,0 +1,117 @@
+What is the difference between "size" and "size on disk" in the "File properties"
+
+=================================================================================
+
+
+Actually these answers are not 100% correct.
+
+SIZE is the actual size of the folder/file when all it's bits are added and counted.
+
+SIZE on disk is the amount of space a file consumes on the disk. 
+Permit me to explain futher. there is a setting called ALLOCATION UNIT SIZE which can be set when formating a drive. The allocation unit size formats the harddrive so that each allocation unit can store the maximum amount of information to each unit.
+
+Lets say your allocation unit size is set to 4 kilobytes (or 4096 bytes).
+
+Next lets say you wnat to save a file to the harddisk that is 1 kilobyte (1024 bytes) like a shortcut. that information is written to a the uit block. you can only store information from one file on a block so the other 3 kilobytes go unused.
+
+if you want to store a file of 11 kilobytes and each block is assigned 4 kilobytes, then the file will use 2 complete blocks and the other information will use up 3 kilobytes of another block with 1 kilobyte to spare or free with no other file allowed to store information there except that file.
+
+You can see i am right by doing the following.
+Right Click any shortcut in Windows and select PROPERTIES and then click on the GENERAL Tab. the SIZE ON DISK will be equal to the ALLOCATION UNIT SIZE set when your harddrive was formated while the actual size of the shortcut will be a few 1 or two kilobytes.
+
+I hope that explains your question.
+
+If your allocation size is 32 kilobyte and your shorcut's for example take only two kilobytes of space the other 30 kilobytes are wasted. In some instance 32 kb allocation is better for performance but it will depend on the size of the drive. If windows formated your drive it most likely picked the best allocation size foer your drive.
+
+
+
+ALLOCATION UNIT:
+================
+	Allocation Units are also called clusters and they are standardized at 512 Bytes. For the average home user, even for a serious gamer, changing the allocation unit size will not have a noticeable effect on system performance. I think it's best to stay with the default settings because all other components have usually been optimized based on those default settings. This link might provide a better understanding of allocation units and how everything interacts:
+
+*************************************************************************************************************************************************************
+						Hard Drive Clusters and File Allocation		http://www.dewassoc.com/kbase/hard_drives/clusters.htm
+						=======================================
+If you have arrived here through a search engine, and there's no menu to the left click here!
+
+As we have explained throughout our segments on hard drives, as well as their structures and file systems, the purpose of the file system itself is to organize data on the drive. Until recently, the most frequently used file system for personal computers and workstations has been the FAT family of file systems, consisting of FAT12, FAT16, VFAT and FAT32. Each of these file systems use a specific technique for dividing the storage on a disk volume into discrete areas so as to create a balance between efficient disk use and performance. These discrete areas are referred to as clusters, and the process by which files are assigned to clusters is called allocation. Hence, clusters are sometimes referred to as allocation units.
+
+As we move through this discussion of hard drive clusters and file allocation, we will touch on what clusters are and how they are assigned to files. While here, we will also spend some time discussing how the FAT file system handles the deletion and restoration of files, what causes fragmentation and some of the system errors that can occur with the FAT file system.
+
+Clusters (Allocation Units)
+The smallest unit of space on the hard disk that any software program can access is a sector, which usually consists of 512 bytes. It is possible to have an allocation system for a disk whereupon each file is assigned as many individual sectors as is required. An an, a 1 Megabyte would require approximately 2,048 individual sectors to store its data, and the HPFS utilizes this type of allocation system.
+
+The FAT file system, as is the case with most file systems, does not utilize individual sectors, and there are several performance reasons for this. By using individual sectors, the process of managing disks becomes overly cumbersome since files are being broken into 512-byte pieces. If you were to take a 20 GB disk volume set up with 512 byte sectors and manage them individually, the disk would have over 40 million individual sectors. Just keeping track of this many pieces of information is both time, as well as resource, consuming. While some operating systems do allocate specific sector storage, they also require some advanced intelligence to do so. Bear in mind how old the FAT file system is, as it was designed many years ago as merely a simple file system, without the capability to managed individual sectors.
+
+In order for FAT to manage files with some form of efficiency is to group sectors into larger blocks referred to as clusters, or allocation units. Cluster size, however, is not a predetermined size, but rather is determined by the size of the disk volume itself, with small volumes (disk sizes) resulting in smaller clusters, and larger volumes (disk sizes) using larger cluster sizes. For the most part, a cluster ranges in size from 4 sectors or 2,048 bytes to 64 sectors or 32,768 bytes. You should be aware that you may, on some occasions, find 128-sector clusters in use at 65,536 bytes per cluster, as well as some floppy disks with smaller clusters that is usual at just 1 sector per cluster. In all cases, the sectors in a cluster are continuous, therefore each cluster is a continuous block of space on the disk.
+
+Cluster sizing, and therefore partition or volume size, as they are directly related, have an important impact on performance and disk utilization. In all cases, cluster size is determined at the time a disk volume is partitioned. Certain third-party partitioning utilities such as Partition Magic by PowerQuest can alter the cluster size of an existing partition within specific parameters. However, this aside, once the partition size is selected, so are the cluster sizes fixed.
+
+Some things to keep in mind:
+
+Every file must be allocated an integer number of clusters.
+A cluster is the smallest unit of disk space that can be allocated to a file, which is why clusters are often called allocation units.
+Wasted space is part of the process. If a volume uses clusters that contain 8,192 bytes, an 8,000 byte file will use one cluster, or 8,192 bytes on the disk. On the other hand, a 9,000 byte file will use two clusters, or 16,384 bytes on the disk.
+Cluster size is an important consideration when setting up a hard disk so as to ensure that you maximizing the efficiency of the disk. Larger cluster sizes result in more wasted space because files are less likely to fill up an integer number of clusters.
+File Chaining and FAT Cluster Allocation
+The file allocation table (FAT) is used to keep track of which clusters are assigned to each file. The operating system, and all installed software applications, can determine where data (a file or all of the parts comprising a file) is located by using the directory entry for the file and the information found in the file allocation table. In addition to keeping a log of where files are located, the FAT also keeps a log of which clusters are open and available for use. When an application needs to create or add to a file, a request is made to the operating systems for more clusters, which are then found in the file allocation table.
+
+ There is an entry in the file allocation table for each cluster used on the disk. Each entry contains a value that represents how the cluster is being used. There are different codes used to represent the status of each cluster.
+
+Every cluster in use by a file has in its entry in the FAT a cluster number that links the current cluster to the next cluster that the same file is using. That next cluster has in its entry the number of the cluster after it. The last cluster used by the file is marked with a special code that tells the system that it is the last cluster for that particular file. As an example, when using the FAT 16 file system, this number may be something like 65,535, which are 16 ones in binary format. Since clusters are linked one to another in this manner, they are referred to as being chained. Every file that requires more than one cluster is "chained" in this manner. Let's try another example with a little more detail this time.
+
+In addition to a cluster number or an end-of-file marker, a cluster entry in the FAT can contain other special codes that alert the operating system to its status. In most cases, a zero is put in the FAT entry of every open or unused cluster. This tells the operating system which clusters are available for file assignments that require additional space. When a disk utility has detected one or more unreliable sectors, usually due to disk defects, the clusters are marked as bad so that the operating system will not attempt to use them.
+
+When an attempt is made by the operating system to access an entire file, the operating system first looks to the files directory entry and then its cluster entries in the FAT. Although this is somewhat difficult to describe, let's take a look at an example. Let's presume that we have a disk partitioned and formatted with 4,096 byte clusters. You then save a file "yourfile.doc" in you "My Documents" directory and it is 16,000 bytes in size. In order to store this file, you will need 4 clusters of storage. Why? Simple, when you divide 16,000 by 4,096, the result is approximately 3.91. Now let's go a few steps further.
+
+Now we're going to open your document in an editor, which one is irrelevant. After starting your editor, you look for the specific file and request that the operating system find the file and forward it to the editor. In order to find the file, your operating system first needs to find the first cluster that contains the first part of the file. To accomplish this, the operating system looks at the file's FAT directory entry to find the starting cluster number for the file. The operating system then checks the FAT and finds the number 9,510 associated with the cluster containing the first part of your file. The system then moves on to cluster number 9,510 on the disk to begin loading the first part of your file.
+
+In order for your system to find the remaining parts of your file, it must again look to the FAT entry for cluster 9,510, and therein it will find another number, which is the next cluster used by your file. For the purposes of this discussion, let's assume this second number is 9,511.
+
+ Files are not always stored in adjacent clusters, and are frequently spread across the entire drive, hence the term "fragmentation".
+
+When this second cluster, 9,511, has been located, the next part of the file is then loaded. Now the operating system again examines the 9,511 FAT entry in order to find the next cluster used by your file. Your operating system continues in this manner until the last cluster used by the file is found. When your system performs this routine, it will repeatedly check the FAT entries to find the number of the next cluster, even though it may have already found it. When it cannot locate this last valid cluster, but instead finds a special number like 65,535 (65,535 is the largest number you can store in 16 bits), it is a signal to the system that there are no more clusters for this particular file. It is in this way that your operating system determines that it has retrieved the entire file.
+
+Since every cluster is chained to the next one using a number, it isn't necessary for the entire file to be stored in one continuous block on the disk. In fact, pieces of the file can be located anywhere on the disk, and can even be moved after the file has been created when a disk is defragmented. The recording of these chains of clusters on the disk is done transparently by the operating system so that to you the user, each file appears to be in one continuous chunk of disk space.
+
+File Deletion and Recovery (Un-delete)
+As part of your use of your computer, you will routinely create and delete files. Deleting files naturally means to erase them from the hard disk, which leaves you with the impression that the file has been destroyed. While you would only do this with files that you no longer need, it would be useful to be able to reverse an accidental file deletion. It happens happen more often than you might imagine!
+
+One of the advantages of the FAT file system is the ease with which it allows files to be undeleted. This is largely due to the way in which files are deleted with the FAT file system. Contrary to the beliefs of many, deleting a file does not entirely remove the contents of that file from the disk. Instead, the system replaces the first character of the file name with the hex byte code "E5h". This is a special tag that tells the system that this file has been deleted, and that the space it formerly occupied is available for use by other files. The deleted file is not cleared from the clusters, but rather just left there in mid-air.
+
+As you continue to use your computer, these clusters formerly contained files will eventually be reused by other files that you create or expand. If you accidentally delete a file you can attempt to recover it if you act quickly. In DOS, you can use the UNDELETE command. There are also third-party tools that will undelete files, such as Norton Utilities' Unerase. If you use either of these tools immediately, you can usually identify and recover the deleted files in a given directory. You will have to provide the software with the missing first character of the file name (replaced by the hex byte code E5h when the file was deleted).
+
+The less file creation or movement you do between the time the file is deleted and the time when you try to undelete it, will improve your potential for recovery. If you happen to delete a file on a system where the hard disk is fairly full, and then begin creating new files, this new file information will be written into some of the clusters formerly used by the deleted file you are trying to recover. When this occurs, your chances of recovery are nearly impossible without outside professional help. Should you choose to defragment your disk, there is little doubt that you will lose the contents of deleted files forever.
+
+Many of the operating systems available today, especially the Windows® platforms, have made file deletion and recovery less of an issue by integrating file protection for erased files into the operating system itself. As you probably already know, most Windows versions initially send all deleted files to the "Recycle Bin", from which they can be recovered if need be. Bear in mind though stat if you use some of the file deletion shortcuts available in the various Windows version, the deletion is instantaneous and recovery is not nearly as easy! Under normal circumstances, Windows keeps these deleted files around for a while, just in case you want to undelete them. If they are in the Recycle Bin they can be restored to their former locations with no data loss.
+
+ The size of the Recycle Bin is limited and eventually files will be permanently removed from it.
+
+ Warning: They is no substitute for proper backup procedures! If you do allot of file creation, do not not rely too heavily on the capabilities of utilities that restore deleted files.
+
+Fragmentation and Defragmentation
+Each file you store on your hard disk is stored in a group of clusters that are linked together as we discussed above. In addition, this file, or data as it is commonly referred to, within these linked clusters can be located anywhere on the disk. If you were to have a 5 MB file stored on a disk using 4,096-byte clusters, it is using 1,280 clusters. These clusters can be on different tracks, as well as different platters of the disk, and in fact, those clusters can be scattered anywhere on the disk.
+
+The fact that a file, or at least its clusters, can be spread all over the disk is far from the preferred method of storing and retrieving files. The obvious reason should be the performance hit your system and your applications will take because of it. Compared to your computers main components, processor, motherboard chipset, system bus and memory, the hard disk is a relatively slow device. Unlike the main computer components, your hard disk is comprised of moving mechanical parts. Each time the hard disk has to move the heads to a different track looking for clusters, it takes time, a lot of time!  Let's try a less technical explanation to make sure you understand what is happening.
+
+Let's presume for the moment that you are a writer and have five (5) books in progress. As you write portions of each book, you print each page that you have written and save it into a loose leaf binder. Of course, you would keep each page in order, page two after page one etcetera, in each of your books, as it would make each of the books easier and faster to read. Keeping this thought, now let's mix the pages of all five books together in no particular order. Now you have the pages of five books mingled together in no particular order. Now it's not so easy to find the pages. Think of the individual pages or your book as parts of your data files saved in each cluster on your hard disk. When they become scattered all over the disk, it takes time to retrieve them.
+
+There are two principle reasons for improving the way your files are stored. One, to reduce the possibility of loss of data. If the files are kept together in adjacent clusters, the chances of recovering them, even with third-party recovery tools, increases measurably. The second is to improve upon the speed in which a file is stored to, or retrieved from, a hard disk. Most current Windows® versions come with their own defragmentation tools, and for those of you that are using something other than Windows®, there are third-party utilities that can optimize the disk by rearranging the files so that they are contiguous.
+
+
+Things to remember!
+~~~~~~~~~~~~~~~~~~~
+A sector is the smallest addressable unit of a hard disk.
+A cluster is a fixed number of contiguous sectors (but not necessarily physically contiguous).
+To a certain extent, you can decide how many sectors are in a cluster.
+All files are allocated space in clusters of sectors using a file allocation table (FAT).
+As you use files, increase and decrease their size and create new files, formerly contiguous clusters are now scattered randomly across your hard disk, which is referred to as fragmentation.
+Most operating systems, including Windows, have their own defragmentation utilities.
+Periodic defragmentation of your hard disk will reduce the risk of data loss and improve overall system performance.
+
+
+Notice: Windows® 95, Windows® 98, Windows® NT, Windows® 2000, Windows® XP and
+Microsoft® Office are registered trademarks or trademarks of the Microsoft Corporation.
+All other trademarks are the property of their respective owners.
+
+Copyright ©1995-2002 DEW Associates Corporation. All rights reserved.

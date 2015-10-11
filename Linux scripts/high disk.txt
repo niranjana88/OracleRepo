@@ -1,0 +1,49 @@
+The High Disk Utilisation indicate quite a few things lets discuss one by one.
+
+ 
+
+1. Here i could suspect the DB time may be high and i think there would be presence of expensive sql statements, so just check in st04.
+
+ 
+
+2. If you have Oracle Database then there is a chance of I/O bottleneck.
+
+ 
+
+In the oracle session the I/O section is broken into subsections as
+
+follow:
+
+High Average Response Time per Read Request
+
+High Average Response Time per Commit
+
+High Average Response Time per Buffer Busy Wait
+
+High Number of Waits for Free Buffers
+
+High Number of Waits for Buffers being written to Disk
+
+High Number of Space Waits for the Log Buffer
+
+File System Response Times
+
+ 
+
+So check the above mentioned part providers.
+
+ 
+
+3. In the operating system monitor of the database server also we can  find
+
+the  high numbers of I/O wait. This value indicates problems in I/O. So check on this.
+
+ 
+
+4. And at last do monitor SM66 and if possible trace through st05 then we can
+
+narrow down the problem why its going for Disk utilisation regularly. Try to find out the Report Name as well.
+
+ 
+
+Finally analys the subsystem using external tools and still the problem is not getting solved the get in conatct with thehardware vendor of th I/O sub system.

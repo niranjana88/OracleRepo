@@ -1,0 +1,46 @@
+
+
+		OS BLOCK SIZE
+		=============
+LINUX:-
+
+ perl -e '$a=(stat ".")[11]; print $a'
+
+OR
+
+ tune2f -l /dev/sda1 | grep Block
+
+
+
+
+			On HPUX issue like "vgdisplay -v /dev/vg01/lvol"
+
+
+
+Windows		fsutil fsinfo ntfsinfo f:
+
+C:\Windows\system32>fsutil fsinfo ntfsinfo f:
+Error:  The device is not ready.
+
+The FSUTIL utility requires a local NTFS volume.
+
+C:\Windows\system32>fsutil fsinfo ntfsinfo c:
+NTFS Volume Serial Number :       0xfe307d98307d591b
+Version :                         3.1
+Number Sectors :                  0x00000000078f6fff
+Total Clusters :                  0x0000000000f1edff
+Free Clusters  :                  0x00000000005b3a93
+Total Reserved :                  0x00000000000026c0
+Bytes Per Sector  :               512
+Bytes Per Physical Sector :       512
+Bytes Per Cluster :               4096
+Bytes Per FileRecord Segment    : 1024
+Clusters Per FileRecord Segment : 0
+Mft Valid Data Length :           0x0000000032ec0000
+Mft Start Lcn  :                  0x00000000000c0000
+Mft2 Start Lcn :                  0x0000000000000002
+Mft Zone Start :                  0x00000000008749e0
+Mft Zone End   :                  0x0000000000881200
+RM Identifier:        4525A0D8-7AC7-11E1-ADD2-8663DBFC994F
+
+C:\Windows\system32>

@@ -1,0 +1,151 @@
+Create the Oracle Groups and User Account
+
+add group
+
+	/usr/sbin/groupadd oinstall
+	/usr/sbin/groupadd dba
+
+create n add user to groups
+
+	/usr/sbin/useradd -m -g oinstall -G dba oracle
+
+if only "dba" - /usr/sbin/useradd -G dba oracle
+
+
+
+#id oracle
+uid=501(oracle) gid=502(oinstall) groups=502(oinstall),503(dba)
+
+
+passwd oracle	--> change password for user
+
+----------------------------------------------------------------------If wrongly add group
+----------------------------------------------------------------------grep oinstall /etc/group	oinstall:x:501:
+----------------------------------------------------------------------grep dba /etc/group	dba:x:502:oracle
+----------------------------------------------------------------------vi /etc/passwd		oracle:x:500:501:primary_linux:/home/oracle:/bin/bash
+												Change as per requirement
+
+
+Add A New User To Secondary Group
+
+	useradd -G {group-name} username
+	useradd -G gp1 usr1			[prior: groupadd gp1]
+
+
+
+usermod example - Add a existing user to existing group
+
+Add existing user tony to ftp supplementary/secondary group with usermod command using -a option ~ i.e. add the user to the supplemental group(s). Use only with -G option 
+
+	usermod -a -G ftp tony
+
+
+Change existing user tony primary group to www:
+# usermod -g www tony
+
+
+Delete / Remove User Account
+____________________________
+
+To remove the user vivek account from the local system / server / workstation, enter:
+# userdel userName
+
+To remove the user's home directory pass the -r option to userdel, enter:
+# userdel -r vivek
+
+
+========================================================================
+
+Example:-
+
+In this example, create a new user called vivek and add it to group called developers. First login as a root user (make sure group developers exists), enter:
+# grep developers /etc/group
+
+Output:
+
+developers:x:1124:
+If you do not see any output then you need to add group developers using groupadd command:
+# groupadd developers
+
+Next, add a user called vivek to group developers:
+# useradd -G developers vivek
+
+Setup password for user vivek:
+# passwd vivek
+
+Ensure that user added properly to group developers:
+# id vivek
+Output:
+
+uid=1122(vivek) gid=1125(vivek) groups=1125(vivek),1124(developers)
+Please note that capital G (-G) option add user to a list of supplementary groups. Each group is separated from the next by a comma, with no intervening whitespace. For example, add user jerry to groups admins, ftp, www, and developers, enter:
+# useradd -G admins,ftp,www,developers jerry
+
+
+#######################################################################################
+A Note About /etc/login.defs File
+
+Default values are taken from the information provided in the /etc/login.defs file for RHEL (Red Hat) based distros. Debian and Ubuntu Linux based system use /etc/deluser.conf file:
+
+ 
+# /etc/deluser.conf: deluser configuration - Debian / Ubuntu Linux only.
+ 
+# Remove home directory and mail spool when user is removed
+REMOVE_HOME = 0
+ 
+# Remove all files on the system owned by the user to be removed
+REMOVE_ALL_FILES = 0
+ 
+# Backup files before removing them. This options has only an effect if
+# REMOVE_HOME or REMOVE_ALL_FILES is set.
+BACKUP = 0
+ 
+# target directory for the backup file
+BACKUP_TO = "."
+ 
+# delete a group even there are still users in this group
+ONLY_IF_EMPTY = 0
+ 
+# exclude these filesystem types when searching for files of a user to backup
+EXCLUDE_FSTYPES = "(proc|sysfs|usbfs|devpts|tmpfs)"
+ 
+#########################################################################################
+
+Complete Example
+
+The following is recommend procedure to delete a user from the Linux server. First, lock user account, enter:
+# passwd -l username
+
+Backup files from /home/vivek to /nas/backup
+# tar -zcvf /nas/backup/account/deleted/v/vivek.$uid.$now.tar.gz /home/vivek/
+
+Please replace $uid, $now with actual UID and date/time. userdel command will not allow you to remove an account if the user is currently logged in. You must kill any running processes which belong to an account that you are deleting, enter:
+# pgrep -u vivek
+# ps -fp $(pgrep -u vivek)
+# killall -KILL -u vivek
+
+To delete user account called vivek, enter:
+# userdel -r vivek
+
+Delete at jobs, enter
+# find /var/spool/at/ -name "[^.]*" -type f -user vivek -delete
+
+To remove cron jobs, enter:
+# crontab -r -u vivek
+
+To remove print jobs, enter:
+# lprm vivek
+
+To find all files owned by user vivek, enter:
+# find / -user vivek -print
+
+You can find file owned by a user called vivek and change its ownership as follows:
+# find / -user vivek -exec chown newUserName:newGroupName {} \;
+
+You can automate the entire procedure by writing a shell script (to remove any at/cron/print/file jobs etc), which is left as an exercise to the readers.
+
+
+
+Ref:-
+http://www.cyberciti.biz/faq/linux-remove-user-command/
+http://www.cyberciti.biz/faq/howto-linux-add-user-to-group/

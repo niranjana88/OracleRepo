@@ -1,0 +1,5 @@
+Type "uname -m" in the terminal and look at the output. 
+If you can see "x86_64", then you have the 64-bit version of Ubuntu installed and 
+you should install the x64 version. 
+
+If it's "i686", then you've got a 32-bit Ubuntu and need to install x86 which too is 32-bit.

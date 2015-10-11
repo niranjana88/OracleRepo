@@ -1,0 +1,86 @@
+Creating primary partition in LINUX:-
+____________________________________
+
+
+[root@oracle ~]# fdisk -l | grep '^Disk'
+Disk /dev/dm-0 doesn't contain a valid partition table
+Disk /dev/dm-1 doesn't contain a valid partition table
+Disk /dev/sda: 32.2 GB, 32212254720 bytes
+Disk /dev/dm-0: 29.9 GB, 29930553344 bytes
+Disk /dev/dm-1: 2147 MB, 2147483648 bytes
+[root@oracle ~]#
+[root@oracle ~]#
+[root@oracle ~]# fdisk /dev/dm-0
+Device contains neither a valid DOS partition table, nor Sun, SGI or OSF disklabel
+Building a new DOS disklabel. Changes will remain in memory only,
+until you decide to write them. After that, of course, the previous
+content won't be recoverable.
+
+
+The number of cylinders for this disk is set to 3638.
+There is nothing wrong with that, but this is larger than 1024,
+and could in certain setups cause problems with:
+1) software that runs at boot time (e.g., old versions of LILO)
+2) booting and partitioning software from other OSs
+   (e.g., DOS FDISK, OS/2 FDISK)
+Warning: invalid flag 0x0000 of partition table 4 will be corrected by w(rite)
+
+Command (m for help): m
+Command action
+   a   toggle a bootable flag
+   b   edit bsd disklabel
+   c   toggle the dos compatibility flag
+   d   delete a partition
+   l   list known partition types
+   m   print this menu
+   n   add a new partition
+   o   create a new empty DOS partition table
+   p   print the partition table
+   q   quit without saving changes
+   s   create a new empty Sun disklabel
+   t   change a partition's system id
+   u   change display/entry units
+   v   verify the partition table
+   w   write table to disk and exit
+   x   extra functionality (experts only)
+
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 1
+First cylinder (1-3638, default 1):
+Using default value 1
+Last cylinder or +size or +sizeM or +sizeK (1-3638, default 3638):
+Using default value 3638
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 22: Invalid argument.
+The kernel still uses the old table.
+The new table will be used at the next reboot.
+Syncing disks.
+[root@oracle ~]# uname -r
+2.6.32-200.13.1.el5uek
+[root@oracle ~]# uname -a
+Linux oracle 2.6.32-200.13.1.el5uek #1 SMP Wed Jul 27 20:21:26 EDT 2011 i686 i686 i386 GNU/Linux
+[root@oracle ~]#
+
+
+
+
+
+
+Disk /dev/sda: 32.2 GB, 32212254720 bytes
+Disk /dev/dm-0: 29.9 GB, 29930553344 bytes
+Disk /dev/dm-1: 2147 MB, 2147483648 bytes
+
+exception in thread "main" java.lang.NoClassDefFoundError
+
+/dev/raw/raw1 /dev/sdb1
+/dev/raw/raw2 /dev/dm-0
+/dev/raw/raw3 /dev/dm-1

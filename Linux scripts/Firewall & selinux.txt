@@ -1,0 +1,11 @@
+Disable Firewall : 	#lokkit		(X-manager)
+
+
+Disable SElinuX
+
+#sestatus
+#getenforce
+#setenforce [0/1]	--[Permissive/Enabled]
+#cat /etc/selinux/config
+
+	edit it and change SELINUX=disabled

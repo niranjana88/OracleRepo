@@ -1,0 +1,228 @@
+http://www.thegeekstuff.com/2010/07/rpm-command-examples/
+=========================================================
+
+RPM Command: 15 Examples to Install, Uninstall, Upgrade, Query RPM Packages
+by SASIKALA on JULY 7, 2010
+ 
+
+RPM command is used for installing, uninstalling, upgrading, querying, listing, and checking RPM packages on your Linux system.
+
+RPM stands for Red Hat Package Manager.
+	       ======================= 	
+
+With root privilege, you can use the rpm command with appropriate options to manage the RPM software packages.
+
+In this article, let us review 15 practical examples of rpm command.
+
+Let us take an rpm of Mysql Client and run through all our examples.
+
+1. Installing a RPM package Using rpm -ivh
+
+RPM filename has packagename, version, release and architecture name.
+
+For example, In the MySQL-client-3.23.57-1.i386.rpm file:
+
+MySQL-client – Package Name
+3.23.57 – Version
+1 – Release
+i386 – Architecture
+When you install a RPM, it checks whether your system is suitable for the software the RPM package contains, figures out where to install the files located inside the rpm package, installs them on your system, and adds that piece of software into its database of installed RPM packages.
+
+
+ 
+The following rpm command installs Mysql client package.
+
+# rpm -ivh  MySQL-client-3.23.57-1.i386.rpm
+Preparing...                ########################################### [100%]
+   1:MySQL-client           ########################################### [100%]
+rpm command and options
+
+-i : install a package
+-v : verbose
+-h : print hash marks as the package archive is unpacked.
+You can also use dpkg on Debian, pkgadd on Solaris, depot on HP-UX to install packages.
+
+2. Query all the RPM Packages using rpm -qa
+
+You can use rpm command to query all the packages installed in your system.
+
+# rpm -qa
+cdrecord-2.01-10.7.el5
+bluez-libs-3.7-1.1
+setarch-2.0-1.1
+.
+.
+-q query operation
+-a queries all installed packages
+To identify whether a particular rpm package is installed on your system, combine rpm and grep command as shown below. Following command checks whether cdrecord package is installed on your system.
+
+# rpm -qa | grep 'cdrecord'
+3. Query a Particular RPM Package using rpm -q
+
+The above example lists all currently installed package. After installation of a package to check the installation, you can query a particular package and verify as shown below.
+
+# rpm -q MySQL-client
+MySQL-client-3.23.57-1
+
+# rpm -q MySQL
+package MySQL is not installed
+Note: To query a package, you should specify the exact package name. If the package name is incorrect, then rpm command will report that the package is not installed.
+
+4. Query RPM Packages in a various format using rpm –queryformat
+
+Rpm command provides an option –queryformat, which allows you to give the header tag names, to list the packages. Enclose the header tag with in {}.
+
+# rpm -qa --queryformat '%{name-%{version}-%{release} %{size}\n'
+cdrecord-2.01-10.7 12324
+bluez-libs-3.7-1.1 5634
+setarch-2.0-1.1 235563
+.
+.
+
+#
+5. Which RPM package does a file belong to? – Use rpm -qf
+
+Let us say, you have list of files and you would want to know which package owns all these files. rpm command has options to achieve this.
+
+The following example shows that /usr/bin/mysqlaccess file is part of the MySQL-client-3.23.57-1 rpm.
+
+# rpm -qf /usr/bin/mysqlaccess
+MySQL-client-3.23.57-1
+-f : file name
+6. Locate documentation of a package that owns file using rpm -qdf
+
+Use the following to know the list of documentations, for a package that owns a file. The following command, gives the location of all the manual pages related to mysql package.
+
+# rpm -qdf /usr/bin/mysqlaccess
+/usr/share/man/man1/mysql.1.gz
+/usr/share/man/man1/mysqlaccess.1.gz
+/usr/share/man/man1/mysqladmin.1.gz
+/usr/share/man/man1/mysqldump.1.gz
+/usr/share/man/man1/mysqlshow.1.gz
+-d : refers documentation.
+7. Information about Installed RPM Package using rpm -qi
+
+rpm command provides a lot of information about an installed pacakge using rpm -qi as shown below:
+
+# rpm -qi MySQL-client
+Name        : MySQL-client                 Relocations: (not relocatable)
+Version     : 3.23.57                           Vendor: MySQL AB
+Release     : 1                             Build Date: Mon 09 Jun 2003 11:08:28 PM CEST
+Install Date: Mon 06 Feb 2010 03:19:16 AM PST               Build Host: build.mysql.com
+Group       : Applications/Databases        Source RPM: MySQL-3.23.57-1.src.rpm
+Size        : 5305109                          License: GPL / LGPL
+Signature   : (none)
+Packager    : Lenz Grimmer
+URL         : http://www.mysql.com/
+Summary     : MySQL - Client
+Description : This package contains the standard MySQL clients.
+If you have an RPM file that you would like to install, but want to know more information about it before installing, you can do the following:
+
+# rpm -qip MySQL-client-3.23.57-1.i386.rpm
+Name        : MySQL-client                 Relocations: (not relocatable)
+Version     : 3.23.57                           Vendor: MySQL AB
+Release     : 1                             Build Date: Mon 09 Jun 2003 11:08:28 PM CEST
+Install Date: (not installed)               Build Host: build.mysql.com
+Group       : Applications/Databases        Source RPM: MySQL-3.23.57-1.src.rpm
+Size        : 5305109                          License: GPL / LGPL
+Signature   : (none)
+Packager    : Lenz Grimmer
+URL         : http://www.mysql.com/
+Summary     : MySQL - Client
+Description : This package contains the standard MySQL clients.
+-i : view information about an rpm
+-p : specify a package name
+8. List all the Files in a Package using rpm -qlp
+
+To list the content of a RPM package, use the following command, which will list out the files without extracting into the local directory folder.
+
+$ rpm -qlp ovpc-2.1.10.rpm
+/usr/bin/mysqlaccess
+/usr/bin/mysqldata
+/usr/bin/mysqlperm
+.
+.
+/usr/bin/mysqladmin
+q : query the rpm file
+l : list the files in the package
+p : specify the package name
+You can also extract files from RPM package using rpm2cpio as we discussed earlier.
+
+9. List the Dependency Packages using rpm -qRP
+
+To view the list of packages on which this package depends,
+
+# rpm -qRp MySQL-client-3.23.57-1.i386.rpm
+/bin/sh
+/usr/bin/perl
+10. Find out the state of files in a package using rpm -qsp
+
+The following command is to find state (installed, replaced or normal) for all the files in a RPM package.
+
+# rpm -qsp MySQL-client-3.23.57-1.i386.rpm
+normal        /usr/bin/msql2mysql
+normal        /usr/bin/mysql
+normal        /usr/bin/mysql_find_rows
+normal        /usr/bin/mysqlaccess
+normal        /usr/bin/mysqladmin
+normal        /usr/bin/mysqlbinlog
+normal        /usr/bin/mysqlcheck
+normal        /usr/bin/mysqldump
+normal        /usr/bin/mysqlimport
+normal        /usr/bin/mysqlshow
+normal        /usr/share/man/man1/mysql.1.gz
+normal        /usr/share/man/man1/mysqlaccess.1.gz
+normal        /usr/share/man/man1/mysqladmin.1.gz
+normal        /usr/share/man/man1/mysqldump.1.gz
+normal        /usr/share/man/man1/mysqlshow.1.gz
+11. Verify a Particular RPM Package using rpm -Vp
+
+Verifying a package compares information about the installed files in the package with information about the files taken from the package metadata stored in the rpm database. In the following command, -V is for verification and -p option is used to specify a package name to verify.
+
+# rpm -Vp MySQL-client-3.23.57-1.i386.rpm
+S.5....T c        /usr/bin/msql2mysql
+S.5....T c        /usr/bin/mysql
+S.5....T c        /usr/bin/mysql_find_rows
+S.5....T c        /usr/bin/mysqlaccess
+The character in the above output denotes the following:
+
+S file Size differs
+M Mode differs (includes permissions and file type)
+5 MD5 sum differs
+D Device major/minor number mismatch
+L readlink(2) path mismatch
+U User ownership differs
+G Group ownership differs
+T mTime differs
+12. Verify a Package Owning file using rpm -Vf
+
+The following command verify the package which owns the given filename.
+
+# rpm -Vf /usr/bin/mysqlaccess
+S.5....T c /usr/bin/mysql
+#
+13. Upgrading a RPM Package using rpm -Uvh
+
+Upgrading a package is similar to installing one, but RPM automatically un-installs existing versions of the package before installing the new one. If an old version of the package is not found, the upgrade option will still install it.
+
+# rpm -Uvh MySQL-client-3.23.57-1.i386.rpm
+Preparing... 			########################################### [100%]
+1:MySQL-client          ###########################################
+14. Uninstalling a RPM Package using rpm -e
+
+To remove an installed rpm package using -e as shown below. After uninstallation, you can query using rpm -qa and verify the uninstallation.
+
+# rpm -ev MySQL-client
+15. Verifying all the RPM Packages using rpm -Va
+
+The following command verifies all the installed packages.
+
+# rpm -Va
+S.5....T c /etc/issue
+S.5....T c /etc/issue.net
+S.5....T c /var/service/imap/ssl/seed
+S.5....T c /home/httpd/html/horde/ingo/config/backends.php
+.
+.
+S.5....T c /home/httpd/html/horde/ingo/config/prefs.php
+S.5....T c /etc/printcap
